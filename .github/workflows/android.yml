@@ -8,6 +8,9 @@ on:
 jobs:
   build-apk:
     runs-on: ubuntu-latest
+    env:
+      ANDROID_HOME: /usr/local/lib/android/sdk
+      ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
 
     steps:
       - name: Repoyu çek
@@ -24,9 +27,6 @@ jobs:
         with:
           distribution: "temurin"
           java-version: "17"
-
-      - name: Android SDK kur
-        uses: android-actions/setup-android@v3
 
       - name: Bağımlılıkları yükle
         run: npm ci
