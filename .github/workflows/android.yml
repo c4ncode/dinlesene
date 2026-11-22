@@ -2,7 +2,9 @@ name: Build Dinlesene APK
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches:
+      - main
+      - master
   workflow_dispatch:
 
 jobs:
@@ -13,37 +15,37 @@ jobs:
       ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
 
     steps:
-      - name: Repoyu çek
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Node.js kur
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           cache: "npm"
 
-      - name: Java 17 kur
+      - name: Setup Java 17
         uses: actions/setup-java@v4
         with:
           distribution: "temurin"
           java-version: "17"
 
-      - name: Bağımlılıkları yükle
+      - name: Install dependencies
         run: npm ci
 
-      - name: React uygulamasını derle
+      - name: Build web app
         run: npm run build
 
-      - name: Capacitor Android senkronizasyonu
+      - name: Sync Capacitor Android
         run: npx cap sync android
 
-      - name: Debug APK üret
+      - name: Build debug APK
         run: |
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
 
-      - name: APK dosyasını Artifact olarak yükle
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: dinlesene-debug-apk
